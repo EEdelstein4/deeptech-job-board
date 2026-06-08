@@ -810,7 +810,7 @@ const THESES = [
 // FUNDING DATA  (refresh via fetch_funding.py)
 // date: ISO YYYY-MM-DD  |  series: round label  |  amount: raise string
 // valuation: post-money (null = undisclosed)  |  investors: top names
-// Badge shows if age <= 180d.  hot (gold) = ≤90d  ·  warm (magenta) = 91-180d
+// Badge shows if age <= 365d.  hot (gold) = ≤90d  ·  warm (magenta) = 91-365d
 // ═══════════════════════════════════════════════════════════════
 const FUNDING = {
   // ── HOT (< 90 days) ─────────────────────────────────────────
@@ -878,6 +878,113 @@ const FUNDING = {
     source: 'PitchBook',
     source_url: 'https://pitchbook.com/profiles/company/109013-05'
   },
+  // ── HOT (< 90 days) — additional ──
+  'nv-cursor': {
+    date: '2026-04-17', series: 'Series E',         amount: '$2B',
+    valuation: '$50B+',
+    investors: ['Andreessen Horowitz','Thrive Capital','NVIDIA','Battery Ventures','Accel'],
+    source: 'TechCrunch',
+    source_url: 'https://techcrunch.com/2026/04/17/sources-cursor-in-talks-to-raise-2b-at-50b-valuation-as-enterprise-growth-surges/'
+  },
+  'nv-cohere': {
+    date: '2026-04-24', series: 'Series E',         amount: '$600M',
+    valuation: '$20B',
+    investors: ['Schwarz Group'],
+    source: 'TechCrunch',
+    source_url: 'https://techcrunch.com/2026/04/25/why-cohere-is-merging-with-aleph-alpha/'
+  },
+  'aionics': {
+    date: '2026-03-31', series: 'Series A',         amount: null,
+    valuation: null,
+    investors: [],
+    source: 'PitchBook',
+    source_url: 'https://pitchbook.com/profiles/company/481349-44'
+  },
+  'nv-ayar': {
+    date: '2026-03-15', series: 'Series E',         amount: '$500M',
+    valuation: null,
+    investors: ['Neuberger Berman','AMD Ventures','Intel Capital','NVIDIA','ARK Invest','Insight Partners','MediaTek','QIA'],
+    source: 'Optica OPN',
+    source_url: 'https://www.optica-opn.org/home/industry/2026/march/ayar_labs_raises_us$500_million/'
+  },
+  // ── WARM (90-365 days) — additional ──
+  'nv-bfl': {
+    date: '2025-12-15', series: 'Series B',         amount: '$300M',
+    valuation: '$3.25B',
+    investors: ['Salesforce Ventures','Anjney Midha / AMP','Andreessen Horowitz','NVIDIA','General Catalyst','Temasek'],
+    source: 'Vestbee',
+    source_url: 'https://www.vestbee.com/insights/articles/black-forest-labs-secures-300-m'
+  },
+  'nv-hippocratic': {
+    date: '2025-11-03', series: 'Series C',         amount: '$126M',
+    valuation: '$3.5B',
+    investors: ['Avenir Growth','CapitalG','General Catalyst','Andreessen Horowitz','Kleiner Perkins'],
+    source: 'SiliconAngle',
+    source_url: 'https://siliconangle.com/2025/11/03/hippocratic-ais-valuation-soars-3-5b-raising-126m-new-funding/'
+  },
+  'nv-lambda': {
+    date: '2025-11-15', series: 'Series E',         amount: '$1.5B',
+    valuation: null,
+    investors: ['TWG Global'],
+    source: 'Medium / Sacra',
+    source_url: 'https://sacra.com/c/lambda-labs/'
+  },
+  'nv-poolside': {
+    date: '2025-10-30', series: 'Strategic Round',  amount: '$1B+',
+    valuation: '$12B',
+    investors: ['NVIDIA'],
+    source: 'TechCrunch',
+    source_url: 'https://techcrunch.com/2025/10/30/nvidia-is-reportedly-investing-up-to-1-billion-in-poolside/'
+  },
+  'nv-crusoe': {
+    date: '2025-10-24', series: 'Series E',         amount: '$1.375B',
+    valuation: '$10B',
+    investors: [],
+    source: 'Crusoe Newsroom',
+    source_url: 'https://www.crusoe.ai/resources/newsroom/crusoe-announces-series-e-funding'
+  },
+  'lila': {
+    date: '2025-10-14', series: 'Series A',         amount: '$350M',
+    valuation: '$1.3B',
+    investors: ['NVentures','ADIA','March Capital','Braidwell','Collective Global','Flagship Pioneering'],
+    source: 'lila.ai',
+    source_url: 'https://www.lila.ai/news/announcing-the-close-of-our-series-a'
+  },
+  'nv-figure': {
+    date: '2025-09-16', series: 'Series C',         amount: '$1B+',
+    valuation: '$39B',
+    investors: ['Parkway VC','NVIDIA','Macquarie Capital','Intel Capital','Brookfield AM','LG Technology','Salesforce'],
+    source: 'TechCrunch',
+    source_url: 'https://techcrunch.com/2025/09/16/figure-reaches-39b-valuation-in-latest-funding-round/'
+  },
+  'cuspai': {
+    date: '2025-09-10', series: 'Series A',         amount: '$100M',
+    valuation: '$520M',
+    investors: ['NEA','Temasek','NVentures','Samsung Ventures','Hyundai Motor Group'],
+    source: 'Fortune',
+    source_url: 'https://fortune.com/2025/09/10/cuspai-raises-100-million-in-new-venture-capital-funding-ai-for-chemistry/'
+  },
+  'nv-nscale': {
+    date: '2025-09-15', series: 'Series B',         amount: '$1.1B',
+    valuation: null,
+    investors: ['NVIDIA ($683M)'],
+    source: 'Tracxn',
+    source_url: 'https://tracxn.com/d/companies/nscale'
+  },
+  'nv-thinking': {
+    date: '2025-07-15', series: 'Seed / Series A',  amount: '$2B',
+    valuation: '$12B',
+    investors: ['Andreessen Horowitz'],
+    source: 'Built In',
+    source_url: 'https://builtin.com/articles/what-is-thinking-machines-lab'
+  },
+  'nv-scaleai': {
+    date: '2025-06-12', series: 'Series G',         amount: '$14.3B',
+    valuation: '$29B',
+    investors: ['Meta (49% stake)'],
+    source: 'TechCrunch',
+    source_url: 'https://techcrunch.com/2025/06/12/'
+  },
 };
 
 function daysAgo(dateStr) {
@@ -888,7 +995,7 @@ function renderFundingPill(coId) {
   const f = FUNDING[coId];
   if (!f) return '';
   const age = daysAgo(f.date);
-  if (age > 180) return '';
+  if (age > 365) return '';
   const cls = age <= 90 ? 'hot' : 'warm';
   return `<button class="funding-pill ${cls}" data-funding="${esc(coId)}">${esc(f.series)} · ${esc(f.amount)}</button>`;
 }
