@@ -448,6 +448,130 @@
       .main { padding: 24px 16px 48px; }
       .stats-bar { padding: 10px 16px; }
     }
+
+    /* ── CARD-TOP LEFT ── */
+    .card-top-left {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+
+    /* ── FUNDING BADGE ── */
+    .funding-pill {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 9px;
+      border-radius: 9999px;
+      font-size: 0.65rem;
+      font-weight: 600;
+      font-family: inherit;
+      border: none;
+      cursor: pointer;
+      margin-top: 5px;
+      line-height: 1.5;
+      transition: opacity 0.12s;
+      white-space: nowrap;
+      align-self: flex-start;
+    }
+    .funding-pill:hover { opacity: 0.82; }
+    .funding-pill.hot  { background: #FADB4B; color: #213B4A; }
+    .funding-pill.warm { background: #D3006F; color: #FFFFFF; }
+
+    /* ── FUNDING MODAL ── */
+    .fmodal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(33,59,74,0.5);
+      z-index: 500;
+      align-items: center;
+      justify-content: center;
+    }
+    .fmodal-overlay.open { display: flex; }
+
+    .fmodal-card {
+      background: #213B4A;
+      border-radius: 16px;
+      padding: 24px 28px;
+      max-width: 340px;
+      width: calc(100% - 48px);
+      position: relative;
+      box-shadow: 0 24px 64px rgba(0,0,0,0.4);
+      animation: fmodal-in 0.16s ease;
+    }
+
+    @keyframes fmodal-in {
+      from { opacity: 0; transform: scale(0.93) translateY(10px); }
+      to   { opacity: 1; transform: scale(1)    translateY(0);    }
+    }
+
+    .fmodal-close {
+      position: absolute;
+      top: 14px;
+      right: 16px;
+      background: none;
+      border: none;
+      color: rgba(255,255,255,0.4);
+      font-size: 1rem;
+      cursor: pointer;
+      line-height: 1;
+      padding: 4px;
+      font-family: inherit;
+    }
+    .fmodal-close:hover { color: rgba(255,255,255,0.85); }
+
+    .fmodal-co-name {
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: rgba(255,255,255,0.4);
+      text-transform: uppercase;
+      letter-spacing: 0.7px;
+      margin-bottom: 8px;
+    }
+
+    .fmodal-headline {
+      font-size: 1.15rem;
+      font-weight: 400;
+      letter-spacing: -0.4px;
+      color: #FFFFFF;
+      margin-bottom: 20px;
+      line-height: 1.3;
+    }
+
+    .fmodal-fields {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 8px 16px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      padding-top: 16px;
+      margin-bottom: 16px;
+    }
+
+    .fmodal-label {
+      font-size: 0.7rem;
+      color: rgba(255,255,255,0.38);
+      font-weight: 500;
+      padding-top: 1px;
+      white-space: nowrap;
+    }
+
+    .fmodal-value {
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.88);
+      font-weight: 400;
+      line-height: 1.4;
+    }
+
+    .fmodal-value.hi { color: #FADB4B; font-weight: 600; }
+
+    .fmodal-source {
+      font-size: 0.69rem;
+      color: rgba(255,255,255,0.28);
+      border-top: 1px solid rgba(255,255,255,0.08);
+      padding-top: 12px;
+    }
+    .fmodal-source a { color: rgba(255,255,255,0.5); text-decoration: none; }
+    .fmodal-source a:hover { color: white; text-decoration: underline; }
   </style>
 </head>
 <body>
@@ -480,6 +604,17 @@
 </div>
 
 <main class="main" id="main-content"></main>
+
+<!-- ── FUNDING DETAIL MODAL ── -->
+<div class="fmodal-overlay" id="funding-modal" role="dialog" aria-modal="true">
+  <div class="fmodal-card">
+    <button class="fmodal-close" id="fmodal-close" aria-label="Close">✕</button>
+    <p class="fmodal-co-name" id="fmodal-co-name"></p>
+    <h3 class="fmodal-headline" id="fmodal-headline"></h3>
+    <div class="fmodal-fields" id="fmodal-fields"></div>
+    <p class="fmodal-source" id="fmodal-source"></p>
+  </div>
+</div>
 
 <footer>
   <p>Personal job tracker · Data pulled live from Greenhouse, Lever &amp; Workable public APIs</p>
@@ -670,6 +805,93 @@ const THESES = [
   // { id: 'robotics', label: 'Robotics & Autonomy', description: '...', categories: [...] },
   // { id: 'nuclear',  label: 'Next-Gen Nuclear',    description: '...', categories: [...] },
 ];
+
+// ═══════════════════════════════════════════════════════════════
+// FUNDING DATA  (refresh via fetch_funding.py)
+// date: ISO YYYY-MM-DD  |  series: round label  |  amount: raise string
+// valuation: post-money (null = undisclosed)  |  investors: top names
+// Badge shows if age <= 180d.  hot (gold) = ≤90d  ·  warm (magenta) = 91-180d
+// ═══════════════════════════════════════════════════════════════
+const FUNDING = {
+  // ── HOT (< 90 days) ─────────────────────────────────────────
+  'nv-anthropic': {
+    date: '2026-05-28', series: 'Series H',        amount: '$65B',
+    valuation: '$965B',
+    investors: ['Altimeter Capital','Dragoneer','Greenoaks','Sequoia','Amazon','Temasek'],
+    source: 'TechCrunch',
+    source_url: 'https://techcrunch.com/2026/05/28/anthropic-raises-65-billion-nears-1t-valuation-ahead-of-ipo/'
+  },
+  'armada': {
+    date: '2026-05-19', series: 'Series B',        amount: '$230M',
+    valuation: '$2B',
+    investors: ['Overmatch','8090 Industries','BlackRock','Johnson Controls','Lux Capital','Founders Fund'],
+    source: 'CNBC',
+    source_url: 'https://www.cnbc.com/2026/05/19/modular-data-center-builder-armada-raises-230-million.html'
+  },
+  'orbital': {
+    date: '2026-05-28', series: 'Series B',        amount: '$50M',
+    valuation: null,
+    investors: ['Plural','NVentures','Radical Ventures','Compound VC','Fly Ventures'],
+    source: 'Fortune',
+    source_url: 'https://fortune.com/2026/05/28/exclusive-orbital-industries-raises-50-million-series-b-funding-round-ai-to-discover-exotic-new-materials/'
+  },
+  'nv-mistral': {
+    date: '2026-03-15', series: 'Strategic Round', amount: '$830M',
+    valuation: null,
+    investors: [],
+    source: 'Tracxn',
+    source_url: 'https://tracxn.com/d/companies/mistral-ai/__HEZP0rGFf9kKQbVSiLyAqfPi5TS2VC4xMJR7jSgxAiI'
+  },
+  // ── WARM (90-180 days) ───────────────────────────────────────
+  'nv-openai': {
+    date: '2026-02-27', series: 'Strategic Round', amount: '$122B',
+    valuation: '$852B',
+    investors: ['SoftBank','NVIDIA','Amazon','a16z','Microsoft','Thrive Capital','Sequoia'],
+    source: 'TechCrunch',
+    source_url: 'https://techcrunch.com/2026/02/27/openai-raises-110b-in-one-of-the-largest-private-funding-rounds-in-history/'
+  },
+  'nv-xai': {
+    date: '2026-01-15', series: 'Series C',        amount: '$20B',
+    valuation: null,
+    investors: [],
+    source: 'Crunchbase',
+    source_url: 'https://news.crunchbase.com/venture/foundational-ai-startup-funding-doubled-openai-anthropic-xai-q1-2026/'
+  },
+  'nv-waabi': {
+    date: '2026-01-28', series: 'Series C',        amount: '$1B',
+    valuation: null,
+    investors: ['Khosla Ventures','G2 Venture Partners','NVentures','Uber','Volvo Group VC','Porsche'],
+    source: 'TechCrunch',
+    source_url: 'https://techcrunch.com/2026/01/28/waabi-raises-1b-and-expands-into-robotaxis-with-uber/'
+  },
+  'nv-skild': {
+    date: '2026-01-14', series: 'Series C',        amount: '$1.4B',
+    valuation: '$14B',
+    investors: ['SoftBank Group','Lightspeed','Sequoia Capital'],
+    source: 'Tracxn',
+    source_url: 'https://tracxn.com/d/companies/skild/__2UONhWmLwU2veLVgMlZmmgvKLONC_6y_MfympgL6if4'
+  },
+  'tetrascience': {
+    date: '2026-02-26', series: 'Series B-II',     amount: '$15M',
+    valuation: null,
+    investors: [],
+    source: 'PitchBook',
+    source_url: 'https://pitchbook.com/profiles/company/109013-05'
+  },
+};
+
+function daysAgo(dateStr) {
+  return Math.floor((Date.now() - new Date(dateStr).getTime()) / 86400000);
+}
+
+function renderFundingPill(coId) {
+  const f = FUNDING[coId];
+  if (!f) return '';
+  const age = daysAgo(f.date);
+  if (age > 180) return '';
+  const cls = age <= 90 ? 'hot' : 'warm';
+  return `<button class="funding-pill ${cls}" data-funding="${esc(coId)}">${esc(f.series)} · ${esc(f.amount)}</button>`;
+}
 
 // ═══════════════════════════════════════════════════════════════
 // FILTER KEYWORDS
@@ -889,7 +1111,7 @@ function renderCard(co) {
   if (status === 'loading') {
     return `<div class="company-card" data-id="${co.id}">
       <div class="card-top">
-        <span class="company-name">${esc(co.name)}</span>
+        <div class="card-top-left"><span class="company-name">${esc(co.name)}</span>${renderFundingPill(co.id)}</div>
         <span class="match-badge load">…</span>
       </div>
       <div class="skel w100"></div><div class="skel w75"></div><div class="skel w50"></div>
@@ -899,7 +1121,7 @@ function renderCard(co) {
   if (!hasApi || status === null) {
     return `<div class="company-card no-api" data-id="${co.id}">
       <div class="card-top">
-        <span class="company-name">${esc(co.name)}</span>
+        <div class="card-top-left"><span class="company-name">${esc(co.name)}</span>${renderFundingPill(co.id)}</div>
         <span class="match-badge link">Careers page</span>
       </div>
       ${co.fallback ? `<a href="${esc(co.fallback)}" target="_blank" class="careers-link">View open roles →</a>` : '<p class="no-match-text">No careers page found</p>'}
@@ -913,7 +1135,7 @@ function renderCard(co) {
   if (matches.length === 0) {
     return `<div class="company-card" data-id="${co.id}">
       <div class="card-top">
-        <span class="company-name">${esc(co.name)}</span>
+        <div class="card-top-left"><span class="company-name">${esc(co.name)}</span>${renderFundingPill(co.id)}</div>
         <span class="match-badge none">${jobs.length} role${jobs.length!==1?'s':''}, 0 match</span>
       </div>
       <p class="no-match-text">No matching roles right now</p>
@@ -932,7 +1154,7 @@ function renderCard(co) {
 
   return `<div class="company-card has-matches" data-id="${co.id}">
     <div class="card-top">
-      <span class="company-name">${esc(co.name)}</span>
+      <div class="card-top-left"><span class="company-name">${esc(co.name)}</span>${renderFundingPill(co.id)}</div>
       <span class="match-badge has">${matches.length} match${matches.length!==1?'es':''}</span>
     </div>
     <ul class="role-list">${rows}</ul>
@@ -1118,6 +1340,53 @@ document.getElementById('refresh-btn').addEventListener('click', async () => {
   busy = false;
   btn.disabled = false;
   btn.textContent = '↻ Refresh';
+});
+
+// ═══════════════════════════════════════════════════════════════
+// FUNDING MODAL
+// ═══════════════════════════════════════════════════════════════
+const fModal    = document.getElementById('funding-modal');
+const fCoName   = document.getElementById('fmodal-co-name');
+const fHeadline = document.getElementById('fmodal-headline');
+const fFields   = document.getElementById('fmodal-fields');
+const fSource   = document.getElementById('fmodal-source');
+
+function openFundingModal(coId) {
+  const f  = FUNDING[coId];
+  const co = COMPANIES.find(c => c.id === coId);
+  if (!f || !co) return;
+
+  fCoName.textContent   = co.name;
+  fHeadline.textContent = `${f.series}  ·  ${f.amount}`;
+
+  const rows = [];
+  rows.push(`<span class="fmodal-label">Announced</span><span class="fmodal-value">${new Date(f.date + 'T12:00:00').toLocaleDateString('en-US',{month:'long',year:'numeric'})}</span>`);
+  if (f.valuation)         rows.push(`<span class="fmodal-label">Valuation</span><span class="fmodal-value hi">${esc(f.valuation)}</span>`);
+  if (f.investors?.length) rows.push(`<span class="fmodal-label">Investors</span><span class="fmodal-value">${f.investors.map(esc).join(' · ')}</span>`);
+  fFields.innerHTML = rows.join('');
+
+  fSource.innerHTML = f.source_url
+    ? `Source: <a href="${esc(f.source_url)}" target="_blank" rel="noopener">${esc(f.source||'Press release')} ↗</a>`
+    : `Source: ${esc(f.source||'Public disclosure')}`;
+
+  fModal.classList.add('open');
+  document.addEventListener('keydown', handleFundingEsc);
+}
+
+function closeFundingModal() {
+  fModal.classList.remove('open');
+  document.removeEventListener('keydown', handleFundingEsc);
+}
+
+function handleFundingEsc(e) { if (e.key === 'Escape') closeFundingModal(); }
+
+document.getElementById('fmodal-close').addEventListener('click', closeFundingModal);
+fModal.addEventListener('click', e => { if (e.target === fModal) closeFundingModal(); });
+
+// Event delegation — pills live inside cards that re-render frequently
+document.getElementById('main-content').addEventListener('click', e => {
+  const pill = e.target.closest('.funding-pill');
+  if (pill) openFundingModal(pill.dataset.funding);
 });
 
 // ═══════════════════════════════════════════════════════════════
