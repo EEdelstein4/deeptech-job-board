@@ -590,6 +590,52 @@ const COMPANIES = [
   { id:'redhat',          name:'Red Hat',            cat:'Edge Incumbents',      fallback:'https://www.redhat.com/en/jobs' },
   { id:'vmware',          name:'VMware (Broadcom)',  cat:'Edge Incumbents',      fallback:'https://careers.broadcom.com/' },
 
+  // ── NVENTURES PORTFOLIO ──────────────────────────────────────
+  // -- Foundation Models --
+  { id:'nv-anthropic',  name:'Anthropic',            cat:'Foundation Models',    greenhouse:'anthropic',       fallback:'https://job-boards.greenhouse.io/anthropic' },
+  { id:'nv-openai',     name:'OpenAI',               cat:'Foundation Models',    fallback:'https://openai.com/careers' },
+  { id:'nv-xai',        name:'xAI',                  cat:'Foundation Models',    greenhouse:'xai',             fallback:'https://job-boards.greenhouse.io/xai' },
+  { id:'nv-mistral',    name:'Mistral AI',            cat:'Foundation Models',    fallback:'https://mistral.ai/careers' },
+  { id:'nv-cohere',     name:'Cohere',               cat:'Foundation Models',    fallback:'https://cohere.com/careers' },
+  { id:'nv-perplexity', name:'Perplexity AI',        cat:'Foundation Models',    fallback:'https://www.perplexity.ai/careers' },
+  { id:'nv-thinking',   name:'Thinking Machines Lab',cat:'Foundation Models',    greenhouse:'thinkingmachines', fallback:'https://job-boards.greenhouse.io/thinkingmachines' },
+  { id:'nv-sakana',     name:'Sakana AI',            cat:'Foundation Models',    fallback:'https://sakana.ai/careers' },
+  { id:'nv-reka',       name:'Reka AI',              cat:'Foundation Models',    fallback:'https://reka.ai/careers' },
+  { id:'nv-imbue',      name:'Imbue',                cat:'Foundation Models',    greenhouse:'imbue',           fallback:'https://job-boards.greenhouse.io/imbue' },
+
+  // -- AI Infrastructure --
+  { id:'nv-coreweave',  name:'CoreWeave',            cat:'AI Infrastructure',    greenhouse:'coreweave',       fallback:'https://coreweave.com/careers' },
+  { id:'nv-lambda',     name:'Lambda',               cat:'AI Infrastructure',    fallback:'https://lambdalabs.com/careers' },
+  { id:'nv-crusoe',     name:'Crusoe',               cat:'AI Infrastructure',    fallback:'https://crusoe.ai/careers' },
+  { id:'nv-together',   name:'Together AI',          cat:'AI Infrastructure',    greenhouse:'togetherai',      fallback:'https://job-boards.greenhouse.io/togetherai' },
+  { id:'nv-nscale',     name:'Nscale',               cat:'AI Infrastructure',    fallback:'https://nscale.ai/careers' },
+  { id:'nv-ayar',       name:'Ayar Labs',            cat:'AI Infrastructure',    fallback:'https://ayarlabs.com/careers' },
+  { id:'nv-enfabrica',  name:'Enfabrica',            cat:'AI Infrastructure',    fallback:'https://enfabrica.net/careers' },
+  { id:'nv-weka',       name:'Weka',                 cat:'AI Infrastructure',    fallback:'https://www.weka.io/careers/' },
+  { id:'nv-firmus',     name:'Firmus Technologies',  cat:'AI Infrastructure',    greenhouse:'firmus',          fallback:'https://job-boards.greenhouse.io/firmus' },
+
+  // -- Robotics --
+  { id:'nv-figure',     name:'Figure AI',            cat:'NV Robotics',          greenhouse:'figureai',        fallback:'https://job-boards.greenhouse.io/figureai' },
+  { id:'nv-bright',     name:'Bright Machines',      cat:'NV Robotics',          fallback:'https://www.brightmachines.com/careers' },
+  { id:'nv-skild',      name:'Skild AI',             cat:'NV Robotics',          fallback:'https://www.skild.ai/careers' },
+
+  // -- Autonomous Vehicles --
+  { id:'nv-wayve',      name:'Wayve',                cat:'Autonomous Vehicles',  fallback:'https://wayve.ai/working-at-wayve/' },
+  { id:'nv-waabi',      name:'Waabi',                cat:'Autonomous Vehicles',  fallback:'https://waabi.ai/careers/' },
+  { id:'nv-nuro',       name:'Nuro',                 cat:'Autonomous Vehicles',  greenhouse:'nuro',            fallback:'https://www.nuro.ai/careers' },
+
+  // -- Dev Tools & Data --
+  { id:'nv-cursor',     name:'Cursor',               cat:'Dev Tools & Data',     fallback:'https://www.cursor.com/careers' },
+  { id:'nv-poolside',   name:'Poolside',             cat:'Dev Tools & Data',     fallback:'https://poolside.ai/careers' },
+  { id:'nv-scaleai',    name:'Scale AI',             cat:'Dev Tools & Data',     greenhouse:'scaleai',         fallback:'https://scale.com/careers' },
+
+  // -- Specialized --
+  { id:'nv-hippocratic',name:'Hippocratic AI',       cat:'NV Specialized',       fallback:'https://www.hippocraticai.com/careers' },
+  { id:'nv-sandboxaq',  name:'Sandbox AQ',           cat:'NV Specialized',       fallback:'https://www.sandboxaq.com/careers' },
+  { id:'nv-runway',     name:'Runway',               cat:'NV Specialized',       fallback:'https://runwayml.com/careers' },
+  { id:'nv-bfl',        name:'Black Forest Labs',    cat:'NV Specialized',       greenhouse:'blackforestlabs', fallback:'https://blackforestlabs.ai' },
+  { id:'nv-cfs',        name:'Commonwealth Fusion',  cat:'NV Specialized',       fallback:'https://cfs.energy/careers' },
+
   // ── INCUMBENTS ───────────────────────────────────────────────
   { id:'deepmind',      name:'Google DeepMind',    cat:'Incumbents',           greenhouse:'deepmind',        fallback:'https://deepmind.google/about/careers/' },
   { id:'meta',          name:'Meta',               cat:'Incumbents',           fallback:'https://www.metacareers.com/jobs/?q=materials' },
@@ -614,6 +660,12 @@ const THESES = [
     label: 'AI Edge Infrastructure',
     description: 'Connectivity, compute, and software platforms bringing AI inference to the physical world',
     categories: ['Connectivity', 'Edge Compute', 'Software Infrastructure', 'AI Models', 'Edge Incumbents']
+  },
+  {
+    id: 'nventures',
+    label: 'De-duped NVentures',
+    description: 'NVIDIA\'s venture portfolio — foundation models, AI infrastructure, robotics, and autonomous systems. Deduplicated against other thesis areas.',
+    categories: ['Foundation Models', 'AI Infrastructure', 'NV Robotics', 'Autonomous Vehicles', 'Dev Tools & Data', 'NV Specialized']
   },
   // { id: 'robotics', label: 'Robotics & Autonomy', description: '...', categories: [...] },
   // { id: 'nuclear',  label: 'Next-Gen Nuclear',    description: '...', categories: [...] },
