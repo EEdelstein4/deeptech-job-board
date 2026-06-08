@@ -1,0 +1,1078 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Deep Tech · Job Board</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy: #213B4A;
+      --magenta: #D3006F;
+      --white: #FFFFFF;
+      --gray: #F3F3F3;
+      --border: #E5E7EB;
+      --gradient: linear-gradient(135deg, #FADB4B, #D4076E);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      color: var(--navy);
+      background: var(--white);
+      min-height: 100vh;
+    }
+
+    /* ── HEADER ── */
+    .site-header {
+      background: var(--gradient);
+      padding: 52px 40px 44px;
+      text-align: center;
+    }
+
+    .site-header h1 {
+      font-size: 2.6rem;
+      font-weight: 400;
+      letter-spacing: -2.2px;
+      color: var(--white);
+      margin-bottom: 10px;
+    }
+
+    .site-header p {
+      font-size: 0.95rem;
+      color: rgba(255,255,255,0.85);
+      font-weight: 400;
+    }
+
+    /* ── STICKY CONTROLS ── */
+    .controls {
+      background: var(--white);
+      padding: 14px 32px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      flex-wrap: wrap;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 12px rgba(33,59,74,0.07);
+    }
+
+    .filter-group {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+
+    .filter-label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: var(--navy);
+      opacity: 0.45;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      margin-right: 2px;
+    }
+
+    .pill-btn {
+      padding: 5px 14px;
+      border-radius: 9999px;
+      border: 1.5px solid var(--border);
+      background: var(--white);
+      color: var(--navy);
+      font-size: 0.78rem;
+      font-weight: 500;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.12s ease;
+      line-height: 1.4;
+    }
+
+    .pill-btn:hover { border-color: var(--magenta); color: var(--magenta); }
+
+    .pill-btn.active {
+      background: var(--magenta);
+      border-color: var(--magenta);
+      color: white;
+      font-weight: 600;
+    }
+
+    .search-input {
+      padding: 6px 14px;
+      border-radius: 9999px;
+      border: 1.5px solid var(--border);
+      font-size: 0.8rem;
+      font-family: inherit;
+      color: var(--navy);
+      outline: none;
+      width: 180px;
+      transition: border-color 0.12s;
+    }
+
+    .search-input::placeholder { color: #AAB; }
+    .search-input:focus { border-color: var(--magenta); }
+
+    .refresh-btn {
+      margin-left: auto;
+      padding: 7px 20px;
+      border-radius: 9999px;
+      border: none;
+      background: var(--magenta);
+      color: white;
+      font-size: 0.8rem;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      transition: opacity 0.12s;
+    }
+
+    .refresh-btn:hover { opacity: 0.85; }
+    .refresh-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+
+    .divider-v {
+      width: 1px;
+      height: 20px;
+      background: var(--border);
+      margin: 0 4px;
+    }
+
+    /* ── STATS BAR ── */
+    .stats-bar {
+      background: var(--gray);
+      padding: 10px 32px;
+      font-size: 0.78rem;
+      color: var(--navy);
+      opacity: 0.65;
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .stats-bar span { white-space: nowrap; }
+    .stats-bar .stat-accent { color: var(--magenta); font-weight: 600; opacity: 1; }
+
+    /* ── MAIN ── */
+    .main {
+      padding: 36px 40px 60px;
+      max-width: 1360px;
+      margin: 0 auto;
+    }
+
+    /* ── THESIS SECTION ── */
+    .thesis-section {
+      margin-bottom: 56px;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1.5px solid var(--border);
+    }
+
+    .thesis-header {
+      background: var(--navy);
+      padding: 24px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    .thesis-label {
+      font-size: 1.05rem;
+      font-weight: 400;
+      letter-spacing: -0.5px;
+      color: var(--white);
+      margin-bottom: 4px;
+    }
+
+    .thesis-desc {
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.5);
+      font-weight: 400;
+    }
+
+    .thesis-stats {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 4px;
+      flex-shrink: 0;
+    }
+
+    .thesis-match-count {
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: #FADB4B;
+    }
+
+    .thesis-total {
+      font-size: 0.72rem;
+      color: rgba(255,255,255,0.4);
+    }
+
+    .thesis-body {
+      background: var(--gray);
+      padding: 28px 32px 8px;
+    }
+
+    /* ── CATEGORY SECTION ── */
+    .category-section { margin-bottom: 36px; }
+
+    .category-section.hidden { display: none; }
+
+    .category-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .category-title {
+      font-size: 0.98rem;
+      font-weight: 600;
+      color: var(--navy);
+      white-space: nowrap;
+    }
+
+    .category-match-badge {
+      font-size: 0.7rem;
+      background: #FDE7F3;
+      color: var(--magenta);
+      padding: 2px 9px;
+      border-radius: 9999px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .category-divider {
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* ── COMPANY GRID ── */
+    .company-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 14px;
+    }
+
+    /* ── COMPANY CARD ── */
+    .company-card {
+      background: var(--white);
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      padding: 18px 20px;
+      transition: border-color 0.14s, box-shadow 0.14s;
+    }
+
+    .company-card:hover {
+      border-color: #C0C8CE;
+      box-shadow: 0 3px 12px rgba(33,59,74,0.06);
+    }
+
+    .company-card.has-matches {
+      border-color: var(--magenta);
+      box-shadow: 0 2px 12px rgba(211,0,111,0.07);
+    }
+
+    .company-card.no-api { background: var(--gray); }
+
+    .card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 10px;
+      gap: 8px;
+    }
+
+    .company-name {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--navy);
+      line-height: 1.2;
+    }
+
+    .match-badge {
+      font-size: 0.68rem;
+      padding: 2px 8px;
+      border-radius: 9999px;
+      font-weight: 600;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .match-badge.has  { background: #FDE7F3; color: var(--magenta); }
+    .match-badge.none { background: #F3F3F3; color: #9BA8B0; }
+    .match-badge.load { background: #F3F3F3; color: #C0C8CE; }
+    .match-badge.link { background: #EEF2F5; color: #5C7A8A; }
+
+    /* Role list */
+    .role-list { list-style: none; margin-top: 4px; }
+
+    .role-item {
+      padding: 6px 0;
+      border-bottom: 1px solid #F0F2F4;
+      display: grid;
+      grid-template-columns: 1fr auto auto;
+      gap: 6px;
+      align-items: start;
+    }
+
+    .role-item:last-child { border-bottom: none; }
+
+    .role-title {
+      font-size: 0.8rem;
+      color: var(--navy);
+      line-height: 1.35;
+    }
+
+    .role-location {
+      font-size: 0.7rem;
+      color: #9BA8B0;
+      white-space: nowrap;
+      padding-top: 1px;
+    }
+
+    .role-apply {
+      font-size: 0.7rem;
+      color: var(--magenta);
+      font-weight: 600;
+      text-decoration: none;
+      white-space: nowrap;
+      padding-top: 1px;
+    }
+
+    .role-apply:hover { text-decoration: underline; }
+
+    .card-footer {
+      margin-top: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .view-all {
+      font-size: 0.75rem;
+      color: var(--magenta);
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    .view-all:hover { text-decoration: underline; }
+
+    .no-match-text {
+      font-size: 0.78rem;
+      color: #A0ACB4;
+      margin: 4px 0 8px;
+    }
+
+    .careers-link {
+      font-size: 0.75rem;
+      color: var(--magenta);
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    .careers-link:hover { text-decoration: underline; }
+
+    /* Skeleton loader */
+    @keyframes shimmer {
+      0%   { background-position: -400px 0; }
+      100% { background-position: 400px 0; }
+    }
+
+    .skel {
+      background: linear-gradient(90deg, #EEF0F2 25%, #E0E3E6 50%, #EEF0F2 75%);
+      background-size: 800px 100%;
+      animation: shimmer 1.4s infinite linear;
+      border-radius: 4px;
+      height: 11px;
+      margin: 7px 0;
+    }
+
+    .skel.w100 { width: 100%; }
+    .skel.w75  { width: 75%; }
+    .skel.w50  { width: 50%; }
+
+    /* ── THESIS TABS ── */
+    .thesis-tabs {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .thesis-tab {
+      padding: 5px 14px;
+      border-radius: 9999px;
+      border: 1.5px solid var(--border);
+      background: var(--white);
+      color: var(--navy);
+      font-size: 0.78rem;
+      font-weight: 500;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.12s ease;
+      white-space: nowrap;
+    }
+
+    .thesis-tab:hover { border-color: var(--navy); }
+
+    .thesis-tab.active {
+      background: var(--navy);
+      border-color: var(--navy);
+      color: white;
+      font-weight: 600;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--navy);
+      color: rgba(255,255,255,0.5);
+      padding: 32px 40px;
+      text-align: center;
+      font-size: 0.78rem;
+      line-height: 1.8;
+    }
+
+    footer a { color: rgba(255,255,255,0.75); text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 600px) {
+      .site-header { padding: 36px 20px 30px; }
+      .site-header h1 { font-size: 1.8rem; letter-spacing: -1.4px; }
+      .controls { padding: 12px 16px; }
+      .main { padding: 24px 16px 48px; }
+      .stats-bar { padding: 10px 16px; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  <h1>Deep Tech · Job Board</h1>
+  <p>Live finance, strategy &amp; executive roles across physical AI thesis areas</p>
+</header>
+
+<div class="controls">
+  <div class="filter-group thesis-tabs" id="thesis-tabs">
+    <!-- rendered by JS -->
+  </div>
+  <div class="divider-v"></div>
+  <div class="filter-group">
+    <span class="filter-label">Roles</span>
+    <button class="pill-btn active" data-filter="finance">Finance &amp; Strategy</button>
+    <button class="pill-btn active" data-filter="exec">Exec &amp; Leadership</button>
+    <button class="pill-btn" data-filter="all">All Roles</button>
+  </div>
+  <div class="divider-v"></div>
+  <div class="filter-group">
+    <input type="text" class="search-input" id="keyword-search" placeholder="Search by keyword…">
+  </div>
+  <button class="refresh-btn" id="refresh-btn">↻ Refresh</button>
+</div>
+
+<div class="stats-bar" id="stats-bar">
+  <span>Loading job data…</span>
+</div>
+
+<main class="main" id="main-content"></main>
+
+<footer>
+  <p>Personal job tracker · Data pulled live from Greenhouse, Lever &amp; Workable public APIs</p>
+  <p>Companies sourced from <a href="https://jamiedaudon.substack.com/p/innovating-with-intelligence-physical" target="_blank">Jamie Daudon's Substack</a> + <a href="#" target="_blank">Westly Group AI for Material Discovery market map</a></p>
+  <p style="margin-top:4px; font-size:0.72rem; opacity:0.5">Roles with public ATS pages are fetched live · Cached 1 hr · Click Refresh to force update</p>
+</footer>
+
+<script>
+// ═══════════════════════════════════════════════════════════════
+// COMPANY REGISTRY
+// Keys: greenhouse | lever | workable — only set whichever applies
+// fallback — always set; linked from "View roles →" or as sole CTA
+// ═══════════════════════════════════════════════════════════════
+const COMPANIES = [
+  // ── LAB MANAGEMENT ──────────────────────────────────────────
+  { id:'albert',        name:'Albert',            cat:'Lab Management',       lever:'meetalbert',          fallback:'https://careers.albert.io/' },
+  { id:'alchemy',       name:'Alchemy',            cat:'Lab Management',       greenhouse:'alchemy',         fallback:'https://alchemy.cloud/careers' },
+  { id:'artificial',    name:'Artificial',         cat:'Lab Management',       fallback:'https://artificial.io/careers/' },
+  { id:'benchling',     name:'Benchling',          cat:'Lab Management',       greenhouse:'benchling',       fallback:'https://www.benchling.com/careers' },
+  { id:'dotmatics',     name:'Dotmatics',          cat:'Lab Management',       greenhouse:'dotmatics',       fallback:'https://www.dotmatics.com/company/careers' },
+  { id:'labguru',       name:'Labguru',            cat:'Lab Management',       workable:'labguru',           fallback:'https://apply.workable.com/labguru/' },
+  { id:'mestrelab',     name:'Mestrelab Research', cat:'Lab Management',       fallback:'https://mestrelab.com/about/careers' },
+  { id:'sapio',         name:'Sapio Sciences',     cat:'Lab Management',       lever:'sapiosciences',        fallback:'https://jobs.lever.co/sapiosciences' },
+  { id:'scispot',       name:'Scispot',            cat:'Lab Management',       fallback:'https://www.scispot.com/careers' },
+  { id:'syre',          name:'Syre',               cat:'Lab Management',       fallback:'https://careers.syre.com/' },
+  { id:'tetrascience',  name:'TetraScience',       cat:'Lab Management',       workable:'tetrascience',      fallback:'https://apply.workable.com/tetrascience/' },
+  { id:'uncountable',   name:'Uncountable',        cat:'Lab Management',       lever:'uncountable',          fallback:'https://jobs.lever.co/uncountable' },
+  { id:'valdera',       name:'Valdera',            cat:'Lab Management',       lever:'valdera',              fallback:'https://jobs.lever.co/valdera' },
+  { id:'labviva',       name:'Labviva',            cat:'Lab Management',       greenhouse:'labviva',         fallback:'https://job-boards.greenhouse.io/labviva' },
+
+  // ── SMALL DATA ML ────────────────────────────────────────────
+  { id:'angstrom',      name:'Angstrom AI',        cat:'Small Data ML',        fallback:'https://angstrom-ai.com/' },
+  { id:'atinary',       name:'Atinary',            cat:'Small Data ML',        fallback:'https://atinary.com/careers/' },
+  { id:'cradle',        name:'Cradle',             cat:'Small Data ML',        lever:'lorentz.bio',          fallback:'https://jobs.lever.co/lorentz.bio' },
+  { id:'inflowsai',     name:'Inflows AI',         cat:'Small Data ML',        fallback:'https://inflowsai.com/' },
+  { id:'intellegens',   name:'Intellegens',        cat:'Small Data ML',        fallback:'https://intellegens.com/about/careers/' },
+  { id:'nextmol',       name:'NextMol',            cat:'Small Data ML',        fallback:'https://www.nextmol.com/job-offer/' },
+  { id:'spaero',        name:'Spaero Bio',         cat:'Small Data ML',        greenhouse:'spaero',          fallback:'https://job-boards.greenhouse.io/spaero' },
+  { id:'sunthetics',    name:'Sunthetics',         cat:'Small Data ML',        fallback:'https://www.sunthetics.io/careers' },
+  { id:'quantistry',    name:'Quantistry',         cat:'Small Data ML',        fallback:'https://www.quantistry.com/career' },
+
+  // ── MATERIAL INFORMATICS ─────────────────────────────────────
+  { id:'chemastery',    name:'Chemastery',         cat:'Material Informatics', fallback:'https://www.chemastery.com/about' },
+  { id:'citrine',       name:'Citrine Informatics',cat:'Material Informatics', rippling:'citrine-informatics', fallback:'https://citrine.io/careers/' }, // rippling: CORS-blocked in browser; needs proxy at deploy time
+  { id:'deepverse',     name:'DeepVerse',          cat:'Material Informatics', fallback:'https://deepverse.tech/en/pages/recruit.html' },
+  { id:'kebotix',       name:'Kebotix',            cat:'Material Informatics', fallback:'https://www.kebotix.com/careers' },
+  { id:'aether',        name:'Aether',             cat:'Material Informatics', fallback:'https://careers.kula.ai/aetherbio' },
+  { id:'materialszone', name:'MaterialsZone',      cat:'Material Informatics', fallback:'https://www.materials.zone/careers' },
+  { id:'matxra',        name:'Mat3ra',             cat:'Material Informatics', greenhouse:'matx',            fallback:'https://job-boards.greenhouse.io/matx' },
+  { id:'osium',         name:'Osium AI',           cat:'Material Informatics', fallback:'https://osium.ai/careers' },
+  { id:'polymerize',    name:'Polymerize',         cat:'Material Informatics', fallback:'https://jobs.polymerize.io/' },
+  { id:'allozymes',     name:'Allozymes',          cat:'Material Informatics', fallback:'https://allozymes.com/jobs/' },
+  { id:'altrove',       name:'Altrove',            cat:'Material Informatics', fallback:'https://altrove.ai/' },
+  { id:'avalo',         name:'Avalo',              cat:'Material Informatics', breezy:'avalo',               fallback:'https://avalo.breezy.hr/' },
+  { id:'mattershift',   name:'Mattershift',        cat:'Material Informatics', fallback:'https://mattershift.com/careers' },
+  { id:'multiscale',    name:'Multiscale Technologies', cat:'Material Informatics', fallback:'https://multiscalesystems.com/careers/' },
+  { id:'nobleai',       name:'Noble AI',           cat:'Material Informatics', workable:'noble-ai',          fallback:'https://apply.workable.com/noble-ai/' },
+  { id:'qsimulate',     name:'QSimulate',          cat:'Material Informatics', fallback:'https://qsimulate.com/careers' },
+  { id:'reactwise',     name:'ReactWise',          cat:'Material Informatics', fallback:'https://www.reactwise.com/careers' },
+  { id:'simreka',       name:'Simreka',            cat:'Material Informatics', fallback:'https://simreka.com/work-with-us/' },
+
+  // ── FOUNDATIONAL / GENERATIVE MODELS ────────────────────────
+  { id:'cuspai',        name:'Cusp.ai',            cat:'Foundational Models',  ashby:'cuspai',               fallback:'https://jobs.ashbyhq.com/cuspai' },
+  { id:'dunia',         name:'Dunia Innovations',  cat:'Foundational Models',  fallback:'https://dunia.jobs.personio.com/' },
+  { id:'entalpic',      name:'Entalpic',           cat:'Foundational Models',  fallback:'https://entalpic.notion.site/Entalpic-is-hiring-9f29b9a69fb840508cd3f9a7c1c0d057' },
+  { id:'evoscale',      name:'EvolutionaryScale',  cat:'Foundational Models',  greenhouse:'evolutionaryscale', fallback:'https://evolutionaryscale.ai/careers' },
+  { id:'lila',          name:'LILA',               cat:'Foundational Models',  greenhouse:'lilasciences',     fallback:'https://www.lila.ai/open-roles' },
+  { id:'matsnexus',     name:'Materials Nexus',    cat:'Foundational Models',  smartrecruiters:'MaterialsNexus', fallback:'https://careers.smartrecruiters.com/MaterialsNexus' },
+  { id:'matlantis',     name:'Matlantis',          cat:'Foundational Models',  fallback:'https://matlantis.com/careers' },
+  { id:'radicalai',     name:'Radical AI',         cat:'Foundational Models',  lever:'RadicalAI',            fallback:'https://jobs.lever.co/RadicalAI' },
+  { id:'orbital',       name:'Orbital Materials',  cat:'Foundational Models',  ashby:'orbital',              fallback:'https://jobs.ashbyhq.com/orbital' },
+  { id:'yoneda',        name:'Yoneda Labs',        cat:'Foundational Models',  fallback:'https://www.yonedalabs.com/careers/' },
+
+  // ── PRODUCTS ─────────────────────────────────────────────────
+  { id:'aionics',       name:'Aionics',            cat:'Products',             fallback:'https://aionics.io/careers' },
+  { id:'foundationalloy',name:'Foundation Alloy',  cat:'Products',             rippling:'foundation-alloy', fallback:'https://foundation-alloy.rippling-ats.com/' }, // rippling: CORS-blocked in browser; needs proxy at deploy time
+  { id:'mattiq',        name:'Mattiq',             cat:'Products',             fallback:'https://mattiq.com/careers' },
+  { id:'osmoses',       name:'Osmoses',            cat:'Products',             lever:'osmoses',              fallback:'https://osmoses.com/careers' },
+  { id:'phaseshift',    name:'PhaseShift',         cat:'Products',             fallback:'https://phaseshift.ai/careers' },
+  { id:'radiantmatter', name:'Radiant Matter',     cat:'Products',             fallback:'https://radiantmatter.com/careers' },
+
+  // ── AI EDGE INFRASTRUCTURE ───────────────────────────────────
+  // -- Connectivity --
+  { id:'skylo',           name:'Skylo',              cat:'Connectivity',         ashby:'skylo',                fallback:'https://jobs.ashbyhq.com/skylo' },
+  { id:'starlink',        name:'Starlink / SpaceX',  cat:'Connectivity',         fallback:'https://www.spacex.com/careers/' },
+  { id:'ditto',           name:'Ditto',              cat:'Connectivity',         ashby:'dittoai',              fallback:'https://jobs.ashbyhq.com/dittoai' },
+  { id:'tarana',          name:'Tarana',             cat:'Connectivity',         fallback:'https://taranawireless.applytojob.com/' },
+
+  // -- Edge Compute --
+  { id:'efficientcomp',   name:'Efficient Computer', cat:'Edge Compute',         greenhouse:'efficientcomputer', fallback:'https://job-boards.greenhouse.io/efficientcomputer' },
+  { id:'armada',          name:'Armada',             cat:'Edge Compute',         greenhouse:'armada',          fallback:'https://job-boards.greenhouse.io/armada' },
+  { id:'nvidia',          name:'NVIDIA',             cat:'Edge Compute',         fallback:'https://www.nvidia.com/en-us/about-nvidia/careers/' },
+  { id:'qualcomm',        name:'Qualcomm',           cat:'Edge Compute',         fallback:'https://careers.qualcomm.com/' },
+
+  // -- Software Infrastructure --
+  { id:'zededa',          name:'Zededa',             cat:'Software Infrastructure', lever:'zededa',            fallback:'https://jobs.lever.co/zededa' },
+  { id:'atym',            name:'Atym',               cat:'Software Infrastructure', fallback:'https://www.atym.io/' },
+  { id:'chassy',          name:'Chassy',             cat:'Software Infrastructure', fallback:'https://www.chassy.io/' },
+  { id:'codemetal',       name:'CodeMetal',          cat:'Software Infrastructure', workable:'code-metal',     fallback:'https://apply.workable.com/code-metal/' },
+  { id:'litmus',          name:'Litmus',             cat:'Software Infrastructure', greenhouse:'litmus46',     fallback:'https://boards.greenhouse.io/litmus46' },
+  { id:'highbyte',        name:'HighByte',           cat:'Software Infrastructure', fallback:'https://www.highbyte.com/company/careers' },
+
+  // -- AI Models --
+  { id:'edgeimpulse',     name:'EdgeImpulse',        cat:'AI Models',            lever:'edge-impulse',         fallback:'https://jobs.lever.co/edge-impulse' },
+  { id:'latentai',        name:'Latent AI',          cat:'AI Models',            greenhouse:'latentai',        fallback:'https://boards.greenhouse.io/latentai' },
+
+  // -- Edge Incumbents --
+  { id:'redhat',          name:'Red Hat',            cat:'Edge Incumbents',      fallback:'https://www.redhat.com/en/jobs' },
+  { id:'vmware',          name:'VMware (Broadcom)',  cat:'Edge Incumbents',      fallback:'https://careers.broadcom.com/' },
+
+  // ── INCUMBENTS ───────────────────────────────────────────────
+  { id:'deepmind',      name:'Google DeepMind',    cat:'Incumbents',           greenhouse:'deepmind',        fallback:'https://deepmind.google/about/careers/' },
+  { id:'meta',          name:'Meta',               cat:'Incumbents',           fallback:'https://www.metacareers.com/jobs/?q=materials' },
+  { id:'henkel',        name:'Henkel',             cat:'Incumbents',           fallback:'https://www.henkel.com/careers' },
+  { id:'basf',          name:'BASF',               cat:'Incumbents',           fallback:'https://www.basf.com/global/en/careers.html' },
+  { id:'3m',            name:'3M',                 cat:'Incumbents',           fallback:'https://www.3m.com/3M/en_US/careers-us/' },
+  { id:'siemens',       name:'Siemens',            cat:'Incumbents',           fallback:'https://www.siemens.com/global/en/company/jobs.html' },
+];
+
+// ── THESIS AREAS ─────────────────────────────────────────────
+// Each thesis is a top-level sector view. Add new ones here;
+// companies are assigned to a thesis via their `cat` value.
+const THESES = [
+  {
+    id: 'physical-ai',
+    label: 'Physical AI · Materials Science',
+    description: 'AI-native lab tools, materials informatics, and generative chemistry models',
+    categories: ['Lab Management','Small Data ML','Material Informatics','Foundational Models','Products','Incumbents']
+  },
+  {
+    id: 'edge-infra',
+    label: 'AI Edge Infrastructure',
+    description: 'Connectivity, compute, and software platforms bringing AI inference to the physical world',
+    categories: ['Connectivity', 'Edge Compute', 'Software Infrastructure', 'AI Models', 'Edge Incumbents']
+  },
+  // { id: 'robotics', label: 'Robotics & Autonomy', description: '...', categories: [...] },
+  // { id: 'nuclear',  label: 'Next-Gen Nuclear',    description: '...', categories: [...] },
+];
+
+// ═══════════════════════════════════════════════════════════════
+// FILTER KEYWORDS
+// ═══════════════════════════════════════════════════════════════
+const FIN_KW = [
+  'finance','financial','fp&a','fp & a','controller','treasury','accounting',
+  'chief of staff','strategic finance','business operations','biz ops',
+  'corporate development','corp dev','commercial','revenue operations',
+  'rev ops','investor relations','capital','budget','forecast','cost',
+  'pricing','procurement','bizops'
+];
+
+// Longer phrases checked with .includes(); short acronyms require \b word boundaries
+const EXEC_PHRASES = [
+  'director','vice president','head of','chief ','general manager',
+  'managing director','chief of staff'
+];
+// Short acronyms — word-boundary matched against title only to avoid
+// false positives like "coordinator" matching "coo"
+const EXEC_ACRONYMS = /\b(vp|svp|evp|avp|cfo|coo|cro|cmo|cto|cpo|gm)\b/i;
+
+function matchesFilter(job, filters, kw) {
+  const title  = (job.title  || '').toLowerCase();
+  const team   = (job.team   || '').toLowerCase();
+  const combined = title + ' ' + team;
+
+  if (kw.trim() && !combined.includes(kw.toLowerCase().trim())) return false;
+  if (filters.has('all')) return true;
+
+  // Finance: title OR team can match (e.g. "Data Engineer" in "Finance" dept is relevant)
+  if (filters.has('finance') && FIN_KW.some(k => combined.includes(k))) return true;
+
+  // Exec: phrase match on title+team, acronym match on title only
+  if (filters.has('exec')) {
+    if (EXEC_PHRASES.some(k => combined.includes(k))) return true;
+    if (EXEC_ACRONYMS.test(title)) return true;
+  }
+  return false;
+}
+
+// ═══════════════════════════════════════════════════════════════
+// CACHE  (1-hour TTL, keyed by company id)
+// ═══════════════════════════════════════════════════════════════
+const TTL = 60 * 60 * 1000;
+
+const cache = {
+  get(id) {
+    try {
+      const raw = localStorage.getItem('paj2_' + id);
+      if (!raw) return undefined;
+      const { ts, data } = JSON.parse(raw);
+      if (Date.now() - ts > TTL) { localStorage.removeItem('paj2_' + id); return undefined; }
+      return data;
+    } catch { return undefined; }
+  },
+  set(id, data) {
+    try { localStorage.setItem('paj2_' + id, JSON.stringify({ ts: Date.now(), data })); } catch {}
+  },
+  clear() {
+    Object.keys(localStorage).filter(k => k.startsWith('paj2_')).forEach(k => localStorage.removeItem(k));
+  }
+};
+
+// ═══════════════════════════════════════════════════════════════
+// ATS FETCHERS
+// ═══════════════════════════════════════════════════════════════
+async function ghFetch(slug) {
+  const r = await fetch(`https://boards-api.greenhouse.io/v1/boards/${slug}/jobs?content=true`);
+  if (!r.ok) throw new Error('gh-' + r.status);
+  const { jobs = [] } = await r.json();
+  return jobs.map(j => ({
+    title: j.title,
+    location: j.location?.name || '',
+    team: j.departments?.[0]?.name || '',
+    url: j.absolute_url
+  }));
+}
+
+async function lvFetch(slug) {
+  const r = await fetch(`https://api.lever.co/v0/postings/${slug}?mode=json`);
+  if (!r.ok) throw new Error('lv-' + r.status);
+  const data = await r.json();
+  return (Array.isArray(data) ? data : []).map(j => ({
+    title: j.text,
+    location: j.categories?.location || j.categories?.allLocations?.[0] || '',
+    team: j.categories?.team || j.categories?.department || '',
+    url: j.hostedUrl
+  }));
+}
+
+async function wkFetch(slug) {
+  const r = await fetch(`https://apply.workable.com/api/v3/accounts/${slug}/jobs`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ query:'', location:[], remote:false, department:[], worktype:[] })
+  });
+  if (!r.ok) throw new Error('wk-' + r.status);
+  const { results = [] } = await r.json();
+  return results.map(j => ({
+    title: j.title,
+    location: [j.city, j.country].filter(Boolean).join(', '),
+    team: j.department || '',
+    url: `https://apply.workable.com/${slug}/j/${j.shortcode}/`
+  }));
+}
+
+async function smartrecruitersFetch(slug) {
+  const r = await fetch(`https://api.smartrecruiters.com/v1/companies/${slug}/postings?limit=100`);
+  if (!r.ok) throw new Error('sr-' + r.status);
+  const { content = [] } = await r.json();
+  return content.map(j => ({
+    title: j.name,
+    location: j.location?.city || '',
+    team: j.department?.label || '',
+    url: `https://jobs.smartrecruiters.com/${slug}/${j.id}`
+  }));
+}
+
+async function breezyFetch(slug) {
+  const r = await fetch(`https://${slug}.breezy.hr/json`);
+  if (!r.ok) throw new Error('br-' + r.status);
+  const data = await r.json();
+  return (Array.isArray(data) ? data : []).map(j => ({
+    title: j.name,
+    location: j.location?.name || j.location?.city || '',
+    team: j.department || j.category?.name || '',
+    url: j.url || `https://${slug}.breezy.hr/p/${j.id}`
+  }));
+}
+
+async function ashbyFetch(slug) {
+  const r = await fetch('https://jobs.ashbyhq.com/api/non-user-graphql', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      operationName: 'ApiJobBoardWithTeams',
+      variables: { organizationHostedJobsPageName: slug },
+      query: `query ApiJobBoardWithTeams($organizationHostedJobsPageName: String!) {
+        jobBoard: jobBoardWithTeams(organizationHostedJobsPageName: $organizationHostedJobsPageName) {
+          teams { id name }
+          jobPostings { id title teamId locationName }
+        }
+      }`
+    })
+  });
+  if (!r.ok) throw new Error('ab-' + r.status);
+  const { data } = await r.json();
+  if (!data?.jobBoard) throw new Error('ab-null');
+  const teams = Object.fromEntries(data.jobBoard.teams.map(t => [t.id, t.name]));
+  return data.jobBoard.jobPostings.map(j => ({
+    title: j.title,
+    location: j.locationName || '',
+    team: teams[j.teamId] || '',
+    url: `https://jobs.ashbyhq.com/${slug}/${j.id}`
+  }));
+}
+
+async function ripplingFetch(slug) {
+  const base = `https://${slug}.rippling-ats.com`;
+  const r = await fetch(`${base}/api/rss.xml`);
+  if (!r.ok) throw new Error('rp-' + r.status);
+  const xml = await r.text();
+  const doc = new DOMParser().parseFromString(xml, 'text/xml');
+  if (doc.querySelector('parsererror')) throw new Error('rp-xml-parse');
+  const getTag = (el, tag) => el.getElementsByTagName(tag)[0]?.textContent?.trim() || '';
+  return [...doc.getElementsByTagName('item')].map(item => {
+    const linkText = getTag(item, 'link');
+    return {
+      title: getTag(item, 'title'),
+      location: getTag(item, 'location') || '',
+      team: getTag(item, 'category'),
+      url: linkText.startsWith('http') ? linkText : base + linkText
+    };
+  });
+}
+
+async function fetchCompanyJobs(co) {
+  const cached = cache.get(co.id);
+  if (cached !== undefined) return cached;
+
+  try {
+    let jobs;
+    if (co.greenhouse)        jobs = await ghFetch(co.greenhouse);
+    else if (co.lever)        jobs = await lvFetch(co.lever);
+    else if (co.workable)     jobs = await wkFetch(co.workable);
+    else if (co.ashby)        jobs = await ashbyFetch(co.ashby);
+    else if (co.smartrecruiters) jobs = await smartrecruitersFetch(co.smartrecruiters);
+    else if (co.breezy)       jobs = await breezyFetch(co.breezy);
+    else if (co.rippling)     jobs = await ripplingFetch(co.rippling);
+    else return null; // no API configured — fallback only
+    cache.set(co.id, jobs);
+    return jobs;
+  } catch {
+    return null; // API error — treat same as no API
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════════════════
+let jobData = {};          // id → jobs[] | null | 'loading'
+let activeFilters = new Set(['finance','exec']);
+let kwFilter = '';
+let activeThesis = 'all';
+
+// ═══════════════════════════════════════════════════════════════
+// RENDER HELPERS
+// ═══════════════════════════════════════════════════════════════
+function esc(s) {
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function renderCard(co) {
+  const status = jobData[co.id];
+  const hasApi = co.greenhouse || co.lever || co.workable || co.ashby || co.smartrecruiters || co.breezy || co.rippling;
+
+  if (status === 'loading') {
+    return `<div class="company-card" data-id="${co.id}">
+      <div class="card-top">
+        <span class="company-name">${esc(co.name)}</span>
+        <span class="match-badge load">…</span>
+      </div>
+      <div class="skel w100"></div><div class="skel w75"></div><div class="skel w50"></div>
+    </div>`;
+  }
+
+  if (!hasApi || status === null) {
+    return `<div class="company-card no-api" data-id="${co.id}">
+      <div class="card-top">
+        <span class="company-name">${esc(co.name)}</span>
+        <span class="match-badge link">Careers page</span>
+      </div>
+      ${co.fallback ? `<a href="${esc(co.fallback)}" target="_blank" class="careers-link">View open roles →</a>` : '<p class="no-match-text">No careers page found</p>'}
+    </div>`;
+  }
+
+  // We have live job data
+  const jobs = status;
+  const matches = jobs.filter(j => matchesFilter(j, activeFilters, kwFilter));
+
+  if (matches.length === 0) {
+    return `<div class="company-card" data-id="${co.id}">
+      <div class="card-top">
+        <span class="company-name">${esc(co.name)}</span>
+        <span class="match-badge none">${jobs.length} role${jobs.length!==1?'s':''}, 0 match</span>
+      </div>
+      <p class="no-match-text">No matching roles right now</p>
+      ${co.fallback ? `<a href="${esc(co.fallback)}" target="_blank" class="view-all">View all ${jobs.length} role${jobs.length!==1?'s':''} →</a>` : ''}
+    </div>`;
+  }
+
+  const shown = matches.slice(0, 5);
+  const extra = matches.length - shown.length;
+  const rows = shown.map(j => `
+    <li class="role-item">
+      <span class="role-title">${esc(j.title)}</span>
+      <span class="role-location">${esc((j.location||'').split(',')[0])}</span>
+      <a href="${esc(j.url)}" target="_blank" class="role-apply">Apply →</a>
+    </li>`).join('');
+
+  return `<div class="company-card has-matches" data-id="${co.id}">
+    <div class="card-top">
+      <span class="company-name">${esc(co.name)}</span>
+      <span class="match-badge has">${matches.length} match${matches.length!==1?'es':''}</span>
+    </div>
+    <ul class="role-list">${rows}</ul>
+    <div class="card-footer">
+      <a href="${esc(co.fallback||'#')}" target="_blank" class="view-all">
+        ${extra > 0 ? `+${extra} more · ` : ''}All ${jobs.length} roles →
+      </a>
+    </div>
+  </div>`;
+}
+
+function swapCard(id) {
+  const el = document.querySelector(`[data-id="${id}"]`);
+  if (!el) return;
+  const co = COMPANIES.find(c => c.id === id);
+  const tmp = document.createElement('div');
+  tmp.innerHTML = renderCard(co);
+  el.replaceWith(tmp.firstElementChild);
+}
+
+function renderThesisStats() {
+  for (const thesis of THESES) {
+    const statsEl = document.querySelector(`.thesis-section[data-thesis="${thesis.id}"] .thesis-stats`);
+    if (!statsEl) continue;
+    const thesisCos = COMPANIES.filter(c => thesis.categories.includes(c.cat));
+    const loaded = thesisCos.filter(c => Array.isArray(jobData[c.id]));
+    const matches = loaded.reduce((s,c) => s + jobData[c.id].filter(j => matchesFilter(j, activeFilters, kwFilter)).length, 0);
+    const total   = loaded.reduce((s,c) => s + jobData[c.id].length, 0);
+    statsEl.innerHTML = `
+      ${matches > 0 ? `<span class="thesis-match-count">${matches} matching role${matches!==1?'s':''}</span>` : ''}
+      <span class="thesis-total">${total} total roles · ${thesisCos.length} companies</span>
+    `;
+  }
+}
+
+function renderStats() {
+  const loaded = COMPANIES.filter(c => Array.isArray(jobData[c.id]));
+  const totalRoles = loaded.reduce((s,c) => s + jobData[c.id].length, 0);
+  const matchRoles = loaded.reduce((s,c) => s + jobData[c.id].filter(j => matchesFilter(j, activeFilters, kwFilter)).length, 0);
+  const withMatches = loaded.filter(c => jobData[c.id].some(j => matchesFilter(j, activeFilters, kwFilter))).length;
+  const loading = COMPANIES.filter(c => jobData[c.id] === 'loading').length;
+
+  document.getElementById('stats-bar').innerHTML = `
+    <span>${COMPANIES.length} companies tracked</span>
+    <span><span class="stat-accent">${matchRoles}</span> matching role${matchRoles!==1?'s':''}</span>
+    <span>${totalRoles} total open roles</span>
+    <span>${withMatches} companies with matches</span>
+    ${loading > 0 ? `<span>Loading ${loading} more…</span>` : ''}
+  `;
+}
+
+function renderTabs() {
+  const el = document.getElementById('thesis-tabs');
+  if (!el) return;
+  el.innerHTML = [
+    `<button class="thesis-tab ${activeThesis === 'all' ? 'active' : ''}" data-thesis="all">All Theses</button>`,
+    ...THESES.map(t => `<button class="thesis-tab ${activeThesis === t.id ? 'active' : ''}" data-thesis="${esc(t.id)}">${esc(t.label)}</button>`)
+  ].join('');
+  el.querySelectorAll('.thesis-tab').forEach(btn => {
+    btn.addEventListener('click', () => {
+      activeThesis = btn.dataset.thesis;
+      renderTabs();
+      renderAll();
+    });
+  });
+}
+
+function renderAll() {
+  let html = '';
+  const visibleTheses = activeThesis === 'all' ? THESES : THESES.filter(t => t.id === activeThesis);
+
+  for (const thesis of visibleTheses) {
+    const thesisCos = COMPANIES.filter(c => thesis.categories.includes(c.cat));
+    const thesisLoaded = thesisCos.filter(c => Array.isArray(jobData[c.id]));
+    const thesisMatches = thesisLoaded.reduce((s,c) => s + jobData[c.id].filter(j => matchesFilter(j, activeFilters, kwFilter)).length, 0);
+    const thesisTotal   = thesisLoaded.reduce((s,c) => s + jobData[c.id].length, 0);
+
+    let catHtml = '';
+    for (const cat of thesis.categories) {
+      const cos = COMPANIES.filter(c => c.cat === cat);
+      if (!cos.length) continue;
+      const matchCos = cos.filter(c => Array.isArray(jobData[c.id]) && jobData[c.id].some(j => matchesFilter(j, activeFilters, kwFilter))).length;
+      catHtml += `<section class="category-section" data-cat="${esc(cat)}">
+        <div class="category-header">
+          <h2 class="category-title">${esc(cat)}</h2>
+          ${matchCos > 0 ? `<span class="category-match-badge">${matchCos} co. with matches</span>` : ''}
+          <div class="category-divider"></div>
+        </div>
+        <div class="company-grid">
+          ${cos.map(co => renderCard(co)).join('')}
+        </div>
+      </section>`;
+    }
+
+    html += `<section class="thesis-section" data-thesis="${esc(thesis.id)}">
+      <div class="thesis-header">
+        <div class="thesis-header-inner">
+          <h2 class="thesis-label">${esc(thesis.label)}</h2>
+          <p class="thesis-desc">${esc(thesis.description)}</p>
+        </div>
+        <div class="thesis-stats">
+          ${thesisMatches > 0 ? `<span class="thesis-match-count">${thesisMatches} matching role${thesisMatches!==1?'s':''}</span>` : ''}
+          <span class="thesis-total">${thesisTotal} total roles · ${thesisCos.length} companies</span>
+        </div>
+      </div>
+      <div class="thesis-body">
+        ${catHtml}
+      </div>
+    </section>`;
+  }
+
+  document.getElementById('main-content').innerHTML = html;
+  renderStats();
+  renderThesisStats();
+}
+
+// ═══════════════════════════════════════════════════════════════
+// LOAD JOBS  (batched to avoid rate limits)
+// ═══════════════════════════════════════════════════════════════
+const BATCH = 5;
+
+async function loadAll(force = false) {
+  if (force) cache.clear();
+
+  // Set initial state
+  COMPANIES.forEach(co => {
+    jobData[co.id] = (co.greenhouse || co.lever || co.workable || co.ashby || co.smartrecruiters || co.breezy || co.rippling) ? 'loading' : null;
+  });
+  renderAll();
+
+  const fetchable = COMPANIES.filter(co => co.greenhouse || co.lever || co.workable || co.ashby || co.smartrecruiters || co.breezy || co.rippling);
+
+  for (let i = 0; i < fetchable.length; i += BATCH) {
+    await Promise.all(
+      fetchable.slice(i, i + BATCH).map(async co => {
+        jobData[co.id] = await fetchCompanyJobs(co) || [];
+        swapCard(co.id);
+        renderStats();
+        renderThesisStats();
+      })
+    );
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════
+// EVENTS
+// ═══════════════════════════════════════════════════════════════
+document.querySelectorAll('.pill-btn[data-filter]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const f = btn.dataset.filter;
+    if (f === 'all') {
+      activeFilters.clear();
+      activeFilters.add('all');
+      document.querySelectorAll('.pill-btn[data-filter]').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    } else {
+      activeFilters.delete('all');
+      document.querySelector('[data-filter="all"]').classList.remove('active');
+      if (activeFilters.has(f)) { activeFilters.delete(f); btn.classList.remove('active'); }
+      else                      { activeFilters.add(f);    btn.classList.add('active'); }
+      if (activeFilters.size === 0) {
+        activeFilters.add('all');
+        document.querySelector('[data-filter="all"]').classList.add('active');
+      }
+    }
+    renderAll();
+  });
+});
+
+document.getElementById('keyword-search').addEventListener('input', e => {
+  kwFilter = e.target.value;
+  renderAll();
+});
+
+let busy = false;
+document.getElementById('refresh-btn').addEventListener('click', async () => {
+  if (busy) return;
+  busy = true;
+  const btn = document.getElementById('refresh-btn');
+  btn.disabled = true;
+  btn.textContent = 'Refreshing…';
+  await loadAll(true);
+  busy = false;
+  btn.disabled = false;
+  btn.textContent = '↻ Refresh';
+});
+
+// ═══════════════════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════════════════
+renderTabs();
+loadAll();
+</script>
+</body>
+</html>
