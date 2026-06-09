@@ -476,6 +476,7 @@
     .funding-pill:hover { opacity: 0.82; }
     .funding-pill.hot  { background: #FADB4B; color: #213B4A; }
     .funding-pill.warm { background: #D3006F; color: #FFFFFF; }
+    .funding-pill.cool { background: #0E9F6E; color: #FFFFFF; }
 
     /* ── FUNDING MODAL ── */
     .fmodal-overlay {
@@ -985,6 +986,72 @@ const FUNDING = {
     source: 'TechCrunch',
     source_url: 'https://techcrunch.com/2025/06/12/'
   },
+  // ── HOT additional ───────────────────────────────────────────
+  'nv-firmus': {
+    date: '2026-04-07', series: 'Strategic Round',  amount: '$505M',
+    valuation: '$5.5B',
+    investors: ['Coatue','NVIDIA'],
+    source: 'Bloomberg',
+    source_url: 'https://www.bloomberg.com/news/articles/2026-04-06/nvidia-backed-data-center-builder-firmus-raises-505-million'
+  },
+  // ── WARM additional ──────────────────────────────────────────
+  'nv-runway': {
+    date: '2026-02-10', series: 'Series E',         amount: '$315M',
+    valuation: '$5.3B',
+    investors: ['General Atlantic'],
+    source: 'TechCrunch',
+    source_url: 'https://techcrunch.com/2026/02/10/ai-video-startup-runway-raises-315m-at-5-3b-valuation-eyes-more-capable-world-models/'
+  },
+  'latentai': {
+    date: '2026-03-03', series: 'Strategic Investment', amount: null,
+    valuation: null,
+    investors: ['AUM Ventures'],
+    source: 'PR Newswire',
+    source_url: 'https://www.prnewswire.com/news-releases/latent-ai-receives-investment-from-aum-ventures-to-internationally-scale-ai-solutions-at-the-edge-302701430.html'
+  },
+  // ── COOL additional ──────────────────────────────────────────
+  'nv-sakana': {
+    date: '2025-11-17', series: 'Series B',         amount: '$135M',
+    valuation: '$2.65B',
+    investors: ['Khosla Ventures','MUFG','Macquarie Capital','NEA','Lux Capital','In-Q-Tel'],
+    source: 'TechCrunch',
+    source_url: 'https://techcrunch.com/2025/11/17/sakana-ai-raises-135m-series-b-at-a-2-65b-valuation-to-continue-building-ai-models-for-japan/'
+  },
+  'nv-perplexity': {
+    date: '2025-09-10', series: 'Strategic Round',  amount: '$200M',
+    valuation: '$20B',
+    investors: ['NVIDIA','SoftBank Vision Fund 2','IVP','Accel','NEA','Databricks','Bessemer Venture Partners'],
+    source: 'TechCrunch',
+    source_url: 'https://techcrunch.com/2025/09/10/perplexity-reportedly-raised-200m-at-20b-valuation/'
+  },
+  'nv-cfs': {
+    date: '2025-08-28', series: 'Series B2',        amount: '$863M',
+    valuation: null,
+    investors: ['Mitsui & Co.','Mitsubishi Corporation','Brevan Howard','Morgan Stanley (Counterpoint)','HOF Capital','Stanley Druckenmiller'],
+    source: 'PR Newswire',
+    source_url: 'https://www.prnewswire.com/news-releases/commonwealth-fusion-systems-raises-863-million-series-b2-round-to-accelerate-the-commercialization-of-fusion-energy-302540730.html'
+  },
+  'nv-nuro': {
+    date: '2025-08-21', series: 'Series E',         amount: '$203M',
+    valuation: '$6B',
+    investors: ['NVIDIA','Uber'],
+    source: 'TechCrunch',
+    source_url: 'https://techcrunch.com/2025/08/21/nvidia-is-latest-investor-to-back-av-startup-nuro-in-203m-funding-round/'
+  },
+  'nv-reka': {
+    date: '2025-07-22', series: 'Series B',         amount: '$110M',
+    valuation: '$1B',
+    investors: ['NVIDIA','Snowflake'],
+    source: 'SiliconAngle',
+    source_url: 'https://siliconangle.com/2025/07/22/multimodal-ai-startup-reka-ai-raises-110m-1b-valuation/'
+  },
+  'radicalai': {
+    date: '2025-07-20', series: 'Seed',             amount: '$55M',
+    valuation: null,
+    investors: ['RTX Ventures','AlleyCorp','Eni Next','Infinite Capital','NVentures'],
+    source: 'Pulse2',
+    source_url: 'https://pulse2.com/radical-ai-55-million-series-seed-raised-for-advancing-materials-research/'
+  },
 };
 
 function daysAgo(dateStr) {
@@ -996,8 +1063,9 @@ function renderFundingPill(coId) {
   if (!f) return '';
   const age = daysAgo(f.date);
   if (age > 365) return '';
-  const cls = age <= 90 ? 'hot' : 'warm';
-  return `<button class="funding-pill ${cls}" data-funding="${esc(coId)}">${esc(f.series)} · ${esc(f.amount)}</button>`;
+  const cls = age <= 90 ? 'hot' : age <= 180 ? 'warm' : 'cool';
+  const amtText = f.amount ? ` · ${esc(f.amount)}` : '';
+  return `<button class="funding-pill ${cls}" data-funding="${esc(coId)}">${esc(f.series)}${amtText}</button>`;
 }
 
 // ═══════════════════════════════════════════════════════════════
